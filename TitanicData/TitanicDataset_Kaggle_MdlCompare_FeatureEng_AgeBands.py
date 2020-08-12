@@ -32,10 +32,22 @@ train_data["Title"] = train_data.Name.str.extract(' ([A-Za-z]+)\.', expand=False
 test_data["Title"] = test_data.Name.str.extract(' ([A-Za-z]+)\.', expand=False)
 train_data["familysize"]=train_data["SibSp"]+train_data["Parch"]+1
 test_data["familysize"]=test_data["SibSp"]+test_data["Parch"]+1
+train_data.loc[(train_data['Age']<=16),'Age']=1
+train_data.loc[(train_data['Age']>16) & (train_data['Age']<=32),'Age']=2
+train_data.loc[(train_data['Age']>32) & (train_data['Age']<=48),'Age']=3
+train_data.loc[(train_data['Age']>48) & (train_data['Age']<=64),'Age']=4
+train_data.loc[(train_data['Age']>64) & (train_data['Age']<=80.),'Age']=5
+test_data.loc[(test_data['Age']<=16),'Age']=1
+test_data.loc[(test_data['Age']>16) & (test_data['Age']<=32),'Age']=2
+test_data.loc[(test_data['Age']>32) & (test_data['Age']<=48),'Age']=3
+test_data.loc[(test_data['Age']>48) & (test_data['Age']<=64),'Age']=4
+test_data.loc[(test_data['Age']>64) & (test_data['Age']<=80.),'Age']=5
 
 features = ["Pclass", "Sex", "Fare", "Title", "familysize", "Age"]
 X = pd.get_dummies(train_data[features])
 X_test = pd.get_dummies(test_data[features])
+
+print(X.head())
 
 X_test['Title_Capt']=X_test.apply(lambda x: 0, axis=1)
 X_test['Title_Countess']=X_test.apply(lambda x: 0, axis=1)
